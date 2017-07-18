@@ -8,7 +8,7 @@
 		var controlSpreadsheetID = "1_tZYpivy2TbIwTx8rd7GNzyCgUNhev45xMxQqdN3Njw"; 
 		var currentPageURL="";			//updated in checkForPageChange();
 		var updateIntervalMinutes = 1;
-
+		var location="test";
 		
 		$(document).ready(function()
 		{ 
@@ -19,16 +19,21 @@
 				var controlDataURL = "https://spreadsheets.google.com/feeds/list/" 
 					+ controlSpreadsheetID + "/od6/public/values?alt=json";
 			
-				$.getJSON(controlDataURL, function(data) {	
-					//note: first line (headings) is automatically skipped
-					//get URL
-					var newURL = "";
-					if (typeof this.gsx$url !== 'undefined' && trim(this.gsx$url.$t).length>1)
-						newURL=this.gsx$url.$t;
-					if (newURL != currentPageURL) {
-						currentPageURL = newURL;
-						document.getElementById("show").src = currentPageURL;
-					}
+				$.getJSON(controlDataURL, function(data) {
+					$(data.feed.entry).each(function() {
+						//note: first line (headings) is automatically skipped
+						//get URL
+						var newURL = "";
+						if (typeof this.gsx$location !== 'undefined' && trim(this.gsx$location.$t).length>1 
+						 && typeof this.gsx$url !== 'undefined' && trim(this.gsx$url.$t).length>1
+						 && this.gsx$location == location ) {
+							newURL=this.gsx$url.$t;
+							if (newURL != currentPageURL) {
+								currentPageURL = newURL;
+								document.getElementById("show").src = currentPageURL;
+							}
+						}
+ 					}); //each
 				});//getJSON
 			} //checkForPageChange()		
 		}); //doc.ready()
