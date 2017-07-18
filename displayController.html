@@ -2,15 +2,38 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Display Controller Test</title>
+	<title>Presentation</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script>
-	var updateIntervalMinutes = 1;
-	var timerID = setInterval(checkForPageChange, updateIntervalMinutes*60*1000);
+		var controlSpreadsheetID = "2PACX-1vRdfrP39HcWS812oTWyw8ueJsvh_2glr-cNWvBdlbHkoKVA1NSmLvaJKhcAyKlvIL3O7TsEgY4Ts5C0"
+		var currentPageURL="";			//updated in checkForPageChange();
 
-	function checkForPageChange() {
-		document.getElementById("show").src = "https://www.clackamas.edu";
-	}
-</script>
+		var updateIntervalMinutes = 1;
+
+		
+		$(document).ready(function()
+		{ 
+			checkForPageChange();
+			var timerID = setInterval(checkForPageChange, updateIntervalMinutes*60*1000);		
+
+			function checkForPageChange() {
+				var controlDataURL = "https://spreadsheets.google.com/feeds/list/" 
+					+ spreadsheetID + "/od6/public/values?alt=json";
+			
+				$.getJSON(controlDataURL, function(data) {	
+					//note: first line (headings) is automatically skipped
+					//get URL
+					var newURL = "";
+					if (typeof this.gsx$url !== 'undefined' && trim(this.gsx$url.$t).length>1)
+						newURL=this.gsx$url.$t;
+					if (newURL != currentPageURL) {
+						currentPageURL = newURL;
+						document.getElementById("show").src = currentPageURL;
+					}
+				});//getJSON
+			} //checkForPageChange();		
+		} //doc.ready();
+	</script>
 </head>
 
 <body>
