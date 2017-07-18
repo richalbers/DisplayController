@@ -18,7 +18,7 @@
 
 			function checkForPageChange() {
 				var controlDataURL = "https://spreadsheets.google.com/feeds/list/" 
-					+ spreadsheetID + "/od6/public/values?alt=json";
+					+ controlSpreadsheetID + "/od6/public/values?alt=json";
 			
 				$.getJSON(controlDataURL, function(data) {	
 					//note: first line (headings) is automatically skipped
