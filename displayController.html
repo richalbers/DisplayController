@@ -54,6 +54,12 @@
 			else
 				return null;
 		}
+		//-----------------------------------------------
+		// String trim function
+		function trim(str, chr) {
+  			var rgxtrim = (!chr) ? new RegExp('^\\s+|\\s+$', 'g') : new RegExp('^'+chr+'+|'+chr+'+$', 'g');
+  			return str.replace(rgxtrim, '');
+		}
 	</script>
 </head>
 
