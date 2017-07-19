@@ -5,22 +5,19 @@
 	<title>Presentation</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script>
+	$(document).ready(function()
+	{ 
 		//constants (set here, never changed)
-		var controlSpreadsheetID = "1_tZYpivy2TbIwTx8rd7GNzyCgUNhev45xMxQqdN3Njw"; 
+		var controlSpreadsheetID = "1_tZYpivy2TbIwTx8rd7GNzyCgUNhev45xMxQqdN3Njw";  //two cols: location, url
 		var updateIntervalMinutes = 1;
 		var displayLocation=GetUrlParam('location');
 		if (displayLocation == null)
-			displayLocation="test";
+			displayLocation="test"; //the default location
 		var timerID = setInterval(checkForPageChange, updateIntervalMinutes*60*1000);		
 		
-		//variable (updated in checkForPageChange())
-		var currentPageURL="";			
-		
-		//-------------------------------------------
-		$(document).ready(function()
-		{ 
-			checkForPageChange();			
-		}); //doc.ready()
+		//set current page
+		var currentPageURL="";	//updated in checkForPageChange();		
+		checkForPageChange();			
 		
 		//-----------------------------------------
 		function checkForPageChange() {
@@ -34,7 +31,7 @@
 					//get URL
 					alert(this.gsx$location.$t + '\n' + this.gsx$url.$t);
 					var newURL = "";
-					if (typeof this.gsx$location !== 'undefined' && trim(this.gsx$location.$t).length>1 
+					if (typeof this.gsx$location !== 'undefined' || trim(this.gsx$location.$t).length<1)
 					 && typeof this.gsx$url !== 'undefined' && trim(this.gsx$url.$t).length>1
 					 && this.gsx$location.$t == displayLocation ) {
 						newURL=this.gsx$url.$t;
@@ -57,12 +54,14 @@
 			else
 				return null;
 		}
+		
 		//-----------------------------------------------
 		// String trim function
 		function trim(str, chr) {
   			var rgxtrim = (!chr) ? new RegExp('^\\s+|\\s+$', 'g') : new RegExp('^'+chr+'+|'+chr+'+$', 'g');
   			return str.replace(rgxtrim, '');
 		}
+	}); //doc.ready()
 	</script>
 </head>
 
