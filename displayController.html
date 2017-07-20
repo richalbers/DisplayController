@@ -29,7 +29,7 @@
 				$(data.feed.entry).each(function() {
 					//note: first line (headings) is automatically skipped
 					//get URL
-					alert(this.gsx$location.$t + '\n' + this.gsx$url.$t);
+					alert(this.gsx$location.$t + '\n' + this.gsx$url.$t + '\n' + displayLocation);
 					var newURL = "";
 					if (typeof this.gsx$location !== 'undefined' && trim(this.gsx$location.$t).length<1
 					 && typeof this.gsx$url !== 'undefined' && trim(this.gsx$url.$t).length>1
