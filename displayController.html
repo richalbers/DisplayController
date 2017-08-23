@@ -9,15 +9,18 @@
 	{ 
 		//constants (set here, never changed)
 		var controlSpreadsheetID = "1yJK6SaXp1WxLGuceAtYc-xHqXVLZMSTarWSeFx0Rvdo";  //two cols: location, url
-		var updateIntervalMinutes = 1;
 		var displayLocation=GetUrlParam('location');
-		if (displayLocation == null)
+		if (displayLocation == null) {
 			displayLocation="test"; //the default location
-		var timerID = setInterval(checkForPageChange, updateIntervalMinutes*60*1000);		
+			console.log("No Display Location Specified!  Using default.\n");
+		}
+		console.log("Display Location: " + displayLocation + "\n");
 		
-		//set current page
+		//get current page and periodically check for update
 		var currentPageURL="";	//updated in checkForPageChange();		
-		checkForPageChange();			
+		checkForPageChange();	
+		var updateIntervalMinutes = 1;
+		var timerID = setInterval(checkForPageChange, updateIntervalMinutes*60*1000);
 		
 		//-----------------------------------------
 		function checkForPageChange() {
@@ -28,7 +31,6 @@
 				$(data.feed.entry).each(function() {
 					//note: first line (headings) is automatically skipped
 					//get URL
-					console.log(this.gsx$location.$t + '\n' + this.gsx$url.$t + '\n' + displayLocation);
 					var newURL = "";
 					if (typeof this.gsx$location !== 'undefined' && trim(this.gsx$location.$t).length>1
 					 && typeof this.gsx$url !== 'undefined' && trim(this.gsx$url.$t).length>1
@@ -36,8 +38,8 @@
 						newURL=this.gsx$url.$t;
 						if (newURL != currentPageURL) {
 							currentPageURL = newURL;
-							document.getElementById("show").src = currentPageURL;
 							console.log("loading: " + currentPageURL);
+							document.getElementById("show").src = currentPageURL;
 						}
 					}
  				}); //each
